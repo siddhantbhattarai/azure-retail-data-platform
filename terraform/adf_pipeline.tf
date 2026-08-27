@@ -53,3 +53,77 @@ resource "azurerm_data_factory_pipeline" "bronze_ingestion" {
     }
   ])
 }
+
+resource "azurerm_data_factory_pipeline" "bronze_ingestion_all" {
+  name            = "PL_Bronze_Ingestion_All"
+  data_factory_id = azurerm_data_factory.retail.id
+
+  activities_json = jsonencode([
+    {
+      name = "Get_Landing_Files"
+      type = "GetMetadata"
+
+      typeProperties = {
+        dataset = {
+          referenceName = "DS_ADLS_CSV"
+          type          = "DatasetReference"
+
+          parameters = {
+            fileSystem = "landing"
+            folderPath = "sales"
+            fileName   = ""
+          }
+        }
+
+        fieldList = [
+          "childItems"
+        ]
+      }
+    },
+
+    {
+      name = "ForEach_File"
+      type = "ForEach"
+
+      dependsOn = [
+        {
+          activity = "Get_Landing_Files"
+          dependencyConditions = [
+            "Succeeded"
+          ]
+        }
+      ]
+
+      typeProperties = {
+        items = {
+          type  = "Expression"
+          value = "@activity('Get_Landing_Files').output.childItems"
+        }
+
+        activities = [
+          {
+            name = "Copy_File_To_Bronze"
+            type = "ExecutePipeline"
+
+            typeProperties = {
+              pipeline = {
+                referenceName = "PL_Bronze_Ingestion"
+                type          = "PipelineReference"
+              }
+
+              waitOnCompletion = true
+
+              parameters = {
+                sourceFileSystem      = "landing"
+                sourceFolder          = "sales"
+                sourceFile            = "@item().name"
+                destinationFileSystem = "bronze"
+                destinationFolder     = "sales"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ])
+}
