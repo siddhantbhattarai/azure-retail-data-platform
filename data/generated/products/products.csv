@@ -1,0 +1,16 @@
+product_id,product_name,category,price_per_unit
+PROD001,Beauty Product 1,Beauty,25
+PROD002,Beauty Product 2,Beauty,30
+PROD003,Beauty Product 3,Beauty,50
+PROD004,Beauty Product 4,Beauty,300
+PROD005,Beauty Product 5,Beauty,500
+PROD006,Clothing Product 1,Clothing,25
+PROD007,Clothing Product 2,Clothing,30
+PROD008,Clothing Product 3,Clothing,50
+PROD009,Clothing Product 4,Clothing,300
+PROD010,Clothing Product 5,Clothing,500
+PROD011,Electronics Product 1,Electronics,25
+PROD012,Electronics Product 2,Electronics,30
+PROD013,Electronics Product 3,Electronics,50
+PROD014,Electronics Product 4,Electronics,300
+PROD015,Electronics Product 5,Electronics,500
