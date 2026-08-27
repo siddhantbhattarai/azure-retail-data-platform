@@ -1,62 +1,68 @@
-# ETL DEMO PROJECT
-Azure DATA Factory and Azure Databricks Examples
+# Azure Retail Data Platform
 
-Local Generated CSV
-        │
-        │ Azure CLI upload
-        ▼
-┌──────────────────────┐
-│ ADLS Gen2             │
-│ landing/sales/        │
-│                      │
-│ 13 CSV files         │
-└──────────┬───────────┘
-           │
-           │ ADF
-           ▼
-┌──────────────────────┐
-│ PL_Bronze_Ingestion_All
-│                      │
-│ Get_Landing_Files    │
-│        │             │
-│        ▼             │
-│ ForEach_File         │
-│        │             │
-│        ▼             │
-│ PL_Bronze_Ingestion  │
-└──────────┬───────────┘
-           │
-           ▼
-┌──────────────────────┐
-│ ADLS Gen2             │
-│ bronze/sales/         │
-│                      │
-│ 13 CSV files         │
-└──────────────────────┘
+A cloud-based retail data engineering project built on **Microsoft Azure** using Terraform, Azure Data Factory, and ADLS Gen2.
 
+## Architecture
 
+```text
+Source CSV
+   ↓
+ADLS Gen2 — Landing
+   ↓
+Azure Data Factory
+   ↓
+ADLS Gen2 — Bronze
+   ↓
+Databricks — Silver
+   ↓
+Databricks / SQL — Gold
+   ↓
+Analytics & Reporting
+```
 
-SOURCE DATA
-    │
-    ▼
-Local CSV generation
-    │
-    ▼
-ADLS Gen2 LANDING
-    │
-    │ 13 CSV files
-    ▼
-ADF PL_Bronze_Ingestion_All
-    │
-    ├── Get_Landing_Files
-    │
-    ├── ForEach_File
-    │
-    └── PL_Bronze_Ingestion
-    │
-    ▼
-ADLS Gen2 BRONZE
-    │
-    │ 13 CSV files
-    ▼
-READY FOR SILVER
+## Current Progress
+
+* Generated 1,000 retail transactions.
+* Created customer, product, store, and sales datasets.
+* Provisioned Azure infrastructure using **Terraform**.
+* Created ADLS Gen2 containers:
+
+  * `landing`
+  * `bronze`
+  * `silver`
+  * `gold`
+* Configured ADF Managed Identity and RBAC.
+* Implemented `PL_Bronze_Ingestion` for individual files.
+* Implemented `PL_Bronze_Ingestion_All` for automated multi-file ingestion.
+* Successfully ingested **13 CSV files** from Landing to Bronze.
+
+## Technologies
+
+* Azure Data Lake Storage Gen2
+* Azure Data Factory
+* Azure Databricks
+* Terraform
+* Azure CLI
+* Python
+* CSV
+* Git/GitHub
+
+## Project Structure
+
+```text
+azure-retail-data-platform/
+├── adf/
+├── databricks/
+├── data/
+├── docs/
+├── sql/
+├── terraform/
+├── generate-source-data.py
+├── product-distribution.py
+└── README.md
+```
+
+## Status
+
+**Landing → Bronze: Completed ✅**
+
